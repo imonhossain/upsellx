@@ -1,6 +1,6 @@
 const db = require("../models");
 const ClientInfo = db.clientInfos;
-const { saveClientInfo } = require('../services/client-service.model')
+const { saveClientInfo } = require('../services/client-info.services')
 // Create and Save a new ClientInfo
 exports.create = (req, res) => {
   if (!req.body.url) {
@@ -11,6 +11,7 @@ exports.create = (req, res) => {
   // Create a ClientInfo
   saveClientInfo(req.body, (err, results) => {
     // Save ClientInfo in the database
+    console.log("results", results);
     results
       .save(results)
       .then(data => {

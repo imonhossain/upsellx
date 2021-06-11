@@ -2,12 +2,11 @@ module.exports = mongoose => {
   var schema = mongoose.Schema(
     {
       url: String,
-      description: String,
-      published: Boolean
+      facebookInfo: Object,
     },
     { timestamps: true }
   );
-  schema.method("toJSON", function() {
+  schema.method("toJSON", function () {
     const { __v, _id, ...object } = this.toObject();
     object.id = _id;
     return object;
