@@ -1,24 +1,28 @@
-import logo from './logo.svg';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
+import { ToastContainer } from 'react-toastify';
+import Routes from './routes';
+import axios from 'axios';
+require('dotenv').config();
 function App() {
+  axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Routes></Routes>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </>
+
   );
 }
 
