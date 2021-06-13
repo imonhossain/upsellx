@@ -11,7 +11,7 @@ exports.create = (req, res) => {
   // Create a ClientInfo
   saveClientInfo(req.body, (err, results) => {
     // Save ClientInfo in the database
-    console.log("results", results);
+    //console.log("results", results);
     results
       .save(results)
       .then(data => {
