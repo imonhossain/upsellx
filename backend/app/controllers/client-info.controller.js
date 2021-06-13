@@ -55,7 +55,25 @@ exports.update = (req, res) => {
 
 // Delete a ClientInfo with the specified id in the request
 exports.delete = (req, res) => {
-
+  const id = req.params.id;
+  console.log("req", req.params);
+  ClientInfo.findByIdAndRemove(id)
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot delete Clients with id=${id}. Maybe Clients was not found!`
+        });
+      } else {
+        res.send({
+          message: "Clients was deleted successfully!"
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete Clients with id=" + id
+      });
+    });
 };
 
 // Delete all ClientInfos from the database.
