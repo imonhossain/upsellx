@@ -3,6 +3,9 @@ module.exports = mongoose => {
     {
       url: String,
       facebookInfo: Object,
+      posts: Object,
+      prices: Object,
+      copyright: String,
     },
     { timestamps: true }
   );
