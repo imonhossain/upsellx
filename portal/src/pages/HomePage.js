@@ -90,7 +90,7 @@ const HomePage = () => {
             >
               {({ errors, touched }) => (
                 <Form>
-                  <div className="input-group mb-3 mt-3">
+                  <div className="input-group mb-1 mt-3">
                     <Field type="text" name="url" className="form-control" placeholder="https://example.com/" />
                     <div className="input-group-append">
                       <button className="btn btn-outline-secondary" type="submit">Submit</button>
@@ -100,10 +100,11 @@ const HomePage = () => {
                 </Form>
               )}
             </Formik>
+            <br />
             <table className="table table-bordered">
               <thead>
                 <tr>
-                  <th>Url</th>
+                  <th>URL</th>
                   <th>Action</th>
                 </tr>
               </thead>

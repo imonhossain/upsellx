@@ -1,10 +1,18 @@
 module.exports = mongoose => {
   var schema = mongoose.Schema(
     {
-      url: String,
+      url:
+      {
+        type: String,
+        unique: true,
+        required: [true, "url required."],
+      },
       facebookInfo: Object,
+      linkedInInfo: Object,
+      twitterInfo: Object,
       posts: Object,
       prices: Object,
+      socialLinks: Object,
       copyright: String,
     },
     { timestamps: true }
