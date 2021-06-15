@@ -21,10 +21,15 @@ services:
     networks:
       - upsale_x
       
-  frontend:
-    build: ./portal
+  portal:
+    build:
+      context: ./portal/
+    command: npm start
     volumes:
-      - ./:/app
+      - ./portal/:/usr/app
+      - /usr/app/node_modules
+    depends_on:
+      - backend
     ports:
       - '3000:3000'
     networks:
