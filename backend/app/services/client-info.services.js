@@ -15,16 +15,11 @@ async function main(url) {
     socialLinks: {},
   }
   const facebookInfo = {}
-
-  // // const browser = await puppeteer.launch({ headless: false });
-  // // const page = await browser.newPage();
-  // await page.goto(url);
   const headers = {
     "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
     "accept-encoding": "gzip, deflate, br",
     "accept-language": " en-GB,en-US;q=0.9,en;q=0.8"
   };
-
   const html = await request({
     uri: url,
     headers,
@@ -41,13 +36,8 @@ async function main(url) {
 
   const blogPageURL = $(`a[href*=${url}blog]`).attr("href");
   const pricingURL = $(`a[href*=${url}pricing]`).attr("href");
-  console.log("blogPageURL", blogPageURL);
-  console.log("pricingURL", pricingURL);
 
   if (FACEBOOK_URL) {
-    // const facebookPage = await browser.newPage();
-    // await facebookPage.goto(FACEBOOK_URL);
-
     const facebookHtml = await await request({
       uri: FACEBOOK_URL,
       headers,
@@ -124,9 +114,6 @@ async function main(url) {
 
 
   if (blogPageURL) {
-    console.log("blogPageURL", blogPageURL);
-    // const subPage = await browser.newPage();
-    // await subPage.goto(blogPageURL);
     const subHtml = await await request({
       uri: blogPageURL,
       headers,
@@ -151,9 +138,6 @@ async function main(url) {
 
   if (pricingURL) {
     allData.prices.length = 0;
-    console.log("pricingURL", pricingURL);
-    // const subPage = await browser.newPage();
-    // await subPage.goto(pricingURL);
     const subHtml = await await request({
       uri: pricingURL,
       headers,
@@ -172,7 +156,6 @@ async function main(url) {
       pricesObj.title = sub$(item).find('.title').text().trim();
       console.log("pricesObj.title", pricesObj.title);
       pricesObj.link = sub$(item).find('.learnmore a').attr('href');
-      // prices.push(pricesObj);
       allData.prices.push(pricesObj);
     });
   }
@@ -181,7 +164,6 @@ async function main(url) {
     console.log("include");
     allData.copyright = $(".copyright").text();
   }
-  // console.log("allData", allData);
 
   allData.facebookInfo = facebookInfo;
   return allData;
