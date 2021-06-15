@@ -1,11 +1,11 @@
 FROM node:14
 
-WORKDIR /usr/app
+WORKDIR /usr/src/app
 
 COPY package*.json ./
-RUN npm ci -qy
+RUN npm install
 
 COPY . .
 
-EXPOSE 3333
-CMD [ "node", "server.js" ]
+EXPOSE 7777
+CMD [ "node", "server.js" ] 
