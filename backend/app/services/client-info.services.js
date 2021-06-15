@@ -1,9 +1,7 @@
 const db = require("../models");
 const ClientInfo = db.clientInfos;
-const puppeteer = require('puppeteer');
-const jquery$ = require('jquery');
 const cheerio = require('cheerio');
-var request = require('request')
+var request = require('request-promise')
 
 async function main(url) {
   const allData = {
@@ -18,10 +16,20 @@ async function main(url) {
   }
   const facebookInfo = {}
 
-  const browser = await puppeteer.launch({ headless: false });
-  const page = await browser.newPage();
-  await page.goto(url);
-  const html = await page.content();
+  // // const browser = await puppeteer.launch({ headless: false });
+  // // const page = await browser.newPage();
+  // await page.goto(url);
+  const headers = {
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+    "accept-encoding": "gzip, deflate, br",
+    "accept-language": " en-GB,en-US;q=0.9,en;q=0.8"
+  };
+
+  const html = await request({
+    uri: url,
+    headers,
+    gzip: true,
+  });
   const $ = cheerio.load(html);
 
   const FACEBOOK_URL = $("a[href*=facebook.com]").attr("href");
@@ -37,9 +45,15 @@ async function main(url) {
   console.log("pricingURL", pricingURL);
 
   if (FACEBOOK_URL) {
-    const facebookPage = await browser.newPage();
-    await facebookPage.goto(FACEBOOK_URL);
-    const facebookHtml = await facebookPage.content();
+    // const facebookPage = await browser.newPage();
+    // await facebookPage.goto(FACEBOOK_URL);
+
+    const facebookHtml = await await request({
+      uri: FACEBOOK_URL,
+      headers,
+      gzip: true,
+    })
+
     const facebook$ = cheerio.load(facebookHtml);
     allData.socialLinks.facebookLink = FACEBOOK_URL;
     facebookInfo.name = facebook$('._64-f span').text();
@@ -68,9 +82,11 @@ async function main(url) {
   if (TWITTER_URL) {
     console.log("TWITTER_URL", TWITTER_URL);
     allData.socialLinks.twitterUrl = TWITTER_URL;
-    const subPage = await browser.newPage();
-    await subPage.goto(TWITTER_URL);
-    const subHtml = await subPage.content();
+    const subHtml = await await request({
+      uri: TWITTER_URL,
+      headers,
+      gzip: true,
+    });
     const sub$ = cheerio.load(subHtml);
     allData.twitterInfo.logoUrl = sub$('.css-901oao css-16my406.r-poiln3.r-bcqeeo.r-qvutc0').attr('src');
     allData.twitterInfo.name = sub$('.css-901oao css-16my406.r-poiln3.r-bcqeeo.r-qvutc0').text().trim();
@@ -109,9 +125,13 @@ async function main(url) {
 
   if (blogPageURL) {
     console.log("blogPageURL", blogPageURL);
-    const subPage = await browser.newPage();
-    await subPage.goto(blogPageURL);
-    const subHtml = await subPage.content();
+    // const subPage = await browser.newPage();
+    // await subPage.goto(blogPageURL);
+    const subHtml = await await request({
+      uri: blogPageURL,
+      headers,
+      gzip: true,
+    });
     const sub$ = cheerio.load(subHtml);
     allData.posts.length = 0;
     sub$('.main .post.status-publish').each((index, item) => {
@@ -132,9 +152,13 @@ async function main(url) {
   if (pricingURL) {
     allData.prices.length = 0;
     console.log("pricingURL", pricingURL);
-    const subPage = await browser.newPage();
-    await subPage.goto(pricingURL);
-    const subHtml = await subPage.content();
+    // const subPage = await browser.newPage();
+    // await subPage.goto(pricingURL);
+    const subHtml = await await request({
+      uri: pricingURL,
+      headers,
+      gzip: true,
+    });
     const sub$ = cheerio.load(subHtml);
 
     sub$('.cell.large-4 .package').each((index, item) => {

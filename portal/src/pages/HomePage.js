@@ -50,12 +50,13 @@ const HomePage = () => {
     }
     console.log("values", values);
     try {
+      toastSuccess('Thank you for the submission. We will contact you soon!');
       const result = await axios.post(
         `/clientinfos`,
         values,
       );
       if (result) {
-        toastSuccess('Thank you for the submission. We will contact you soon!');
+        toastSuccess('Saved Successfully');
         const list = clientList;
         list.push(result.data);
         setClientList([]);
@@ -72,7 +73,7 @@ const HomePage = () => {
   const onClickDelete = async (id) => {
     try {
       const result = await axios.delete(`/clientinfos/${id}`);
-      const newClients = clientList.filter(item => item.id != id);
+      const newClients = clientList.filter(item => item.id !== id);
       setClientList(newClients);
       toastSuccess(result.data.message)
     } catch (error) {
@@ -154,14 +155,6 @@ const HomePage = () => {
                   <strong>Url:</strong> {clientDetails?.url}
                 </div>
                 <SocialIcons socialLinks={clientDetails.socialLinks}></SocialIcons>
-                {/* <div className="client-information-item social-icons">
-                  <h6 className="mb-1">Social links:</h6>
-                  {clientDetails?.socialLinks?.facebookLink ? (<a href={clientDetails?.socialLinks?.facebookLink} className="fa fa-facebook" target="_blank"></a>) : null}
-                  {clientDetails?.socialLinks?.twitterUrl ? (<a href={clientDetails?.socialLinks?.twitterUrl} className="fa fa-twitter" target="_blank"></a>) : null}
-                  {clientDetails?.socialLinks?.linkedInLink ? (<a href={clientDetails?.socialLinks?.linkedInLink} className="fa fa-linkedin" target="_blank"></a>) : null}
-                  {clientDetails?.socialLinks?.youtubeLink ? (<a href={clientDetails?.socialLinks?.youtubeLink} className="fa fa-youtube" target="_blank"></a>) : null}
-                  {clientDetails?.socialLinks?.instagramLink ? (<a href={clientDetails?.socialLinks?.instagramLink} className="fa fa-instagram" target="_blank"></a>) : null}
-                </div> */}
                 {clientDetails && clientDetails?.posts?.length ? <PostList postList={clientDetails?.posts}></PostList> : null}
                 {clientDetails && clientDetails?.prices?.length ? <PricingList pricingList={clientDetails?.prices}></PricingList> : null}
 
